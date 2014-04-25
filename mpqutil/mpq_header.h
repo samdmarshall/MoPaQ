@@ -9,11 +9,10 @@
 #ifndef MoPaQ_mpq_header_h
 #define MoPaQ_mpq_header_h
 
-#include <stdint.h>
+#include "common.h"
 
 struct mpq_header {
-	char magic[3];
-	uint8_t header_offset;
+	struct mpq_common_magic magic;
 	uint32_t header_size;
 	uint32_t archive_size;
 	uint16_t version;
@@ -22,19 +21,19 @@ struct mpq_header {
 	uint32_t block_table_offset;
 	uint32_t hash_table_entries;
 	uint32_t block_table_entries;
-};
+} PACK;
 
 struct mpq_header_ext_v2 {
 	uint64_t ext_block_table_offset;
 	uint16_t hash_table_offset_high;
 	uint16_t block_table_offset_high;
-};
+} PACK;
 
 struct mpq_header_ext_v3 {
 	uint64_t archive_size_64;
 	uint64_t bet_table_offset;
 	uint64_t het_table_offset;
-};
+} PACK;
 
 struct mpq_header_ext_v4 {
 	uint64_t hash_table_size_64;
@@ -43,7 +42,7 @@ struct mpq_header_ext_v4 {
 	uint64_t het_table_size;
 	uint64_t bet_table_size;
 	uint32_t data_chunk_size;
-};
+} PACK;
 
 /*
 // Array of MD5's
@@ -56,30 +55,38 @@ unsigned char MD5_MpqHeader[MD5_DIGEST_SIZE];       // MD5 of the MPQ header fro
 */
 
 
-struct mpq_v0 {
-	struct mpq_header header;
+enum header_version {
+	_v0 = 0,
+	_v1,
+	_v2,
+	_v3,
+	_v4
 };
 
-struct mpq_v1 {
+struct mpq_header_v0 {
 	struct mpq_header header;
-};
+} PACK;
 
-struct mpq_v2 {
+struct mpq_header_v1 {
 	struct mpq_header header;
-	struct mpq_header_ext_v2;
-};
+} PACK;
 
-struct mpq_v3 {
+struct mpq_header_v2 {
 	struct mpq_header header;
-	struct mpq_header_ext_v2;
-	struct mpq_header_ext_v3;
-};
+	struct mpq_header_ext_v2 ext_v2;
+} PACK;
 
-struct mpq_v4 {
+struct mpq_header_v3 {
 	struct mpq_header header;
-	struct mpq_header_ext_v2;
-	struct mpq_header_ext_v3;
-	struct mpq_header_ext_v4;
-};
+	struct mpq_header_ext_v2 ext_v2;
+	struct mpq_header_ext_v3 ext_v3;
+} PACK;
+
+struct mpq_header_v4 {
+	struct mpq_header header;
+	struct mpq_header_ext_v2 ext_v2;
+	struct mpq_header_ext_v3 ext_v3;
+	struct mpq_header_ext_v4 ext_v4;
+} PACK;
 
 #endif

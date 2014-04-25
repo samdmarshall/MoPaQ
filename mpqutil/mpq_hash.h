@@ -9,7 +9,7 @@
 #ifndef MoPaQ_mpq_hash_h
 #define MoPaQ_mpq_hash_h
 
-#include <stdint.h>
+#include "common.h"
 
 struct mpq_hash {
 	uint32_t name_a;
@@ -17,6 +17,6 @@ struct mpq_hash {
 	uint16_t locale;
 	uint16_t platform;
 	uint32_t block_index;
-};
+} PACK;
 
 #endif
